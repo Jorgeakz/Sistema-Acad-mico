@@ -1,0 +1,86 @@
+dados = {}
+
+while True:
+    opcao = int(input("1 - Adicionar\n"
+                      "2 - Remover\n"
+                      "3 - Atualizar notas\n"
+                      "4 - Atualizar presença\n"
+                      "5 - Relatório\n"
+                      "6 - Detalhes de um aluno\n"
+                      "Digite: "))
+
+    if opcao == 1:
+        aluno = input("Nome do aluno: ")
+        notas = []
+        for i in range(1, 4):
+            nota = float(input(f"Nota do {i}° semestre de {aluno}: "))
+            notas.append(nota)
+
+        presenca = int(input("Percentual de presença: "))
+        dados[aluno] = {"notas": notas, "presenca": presenca}
+        print(f"{aluno} cadastrado com sucesso!")
+
+    elif opcao == 2:
+        aluno = input("Nome do aluno a remover: ")
+        if aluno in dados:
+            del dados[aluno]
+            print(f"{aluno} removido com sucesso.")
+        else:
+            print("Aluno não encontrado.")
+
+    elif opcao == 3:
+        aluno = input("Nome do aluno: ")
+        if aluno in dados:
+            novas_notas = []
+            for i in range(1, 5):
+                nota = float(input(f"Nova nota do {i}° semestre de {aluno}: "))
+                novas_notas.append(nota)
+            dados[aluno]["notas"] = novas_notas  
+            print("Notas atualizadas com sucesso.")
+        else: 
+            print("Aluno não encontrado.")
+
+    elif opcao == 4:
+        aluno = input("Nome do aluno: ")
+        if aluno in dados:
+            nova_presenca = int(input("Nova presença: "))
+            dados[aluno]["presenca"] = nova_presenca  
+            print("Presença atualizada com sucesso.")
+        else:
+            print("Aluno não encontrado.")
+
+    elif opcao == 5: 
+        aluno = input("Nome do aluno: ")
+        if aluno in dados:
+            notas = dados[aluno]["notas"]
+            presenca = dados[aluno]["presenca"]
+            media = sum(notas) / len(notas)
+            situacao_nota = "ok" if media >= 7 else "recuperar" if 4 <= media < 7 else "reprovado"
+            situacao_presenca = "ok" if presenca > 75 else "reprovado por falta"
+            print(f"{aluno} tem média {media:.2f}, situação de nota: '{situacao_nota}', presença: {presenca}% está '{situacao_presenca}'")
+        else: 
+            print("Aluno não encontrado.")
+
+    elif opcao == 6:
+        aluno = input("Nome do aluno: ")
+        if aluno in dados:
+            op2 = int(input("O que deseja saber?\n"
+                            "1 - Situação da média?\n"
+                            "2 - Situação da presença?\n"
+                            "Digite: "))
+            if op2 == 1:
+                media = sum(dados[aluno]["notas"]) / len(dados[aluno]["notas"])
+                situacao_nota = "ok" if media >= 7 else "recuperar" if 4 <= media < 7 else "reprovado"
+                print(f"Média de {aluno}: {media:.2f}, situação: {situacao_nota}")
+
+            elif op2 == 2:
+                presenca = dados[aluno]["presenca"]
+                situacao_presenca = "ok" if presenca > 75 else "reprovado por falta"
+                print(f"Situação de presença de {aluno}: {situacao_presenca}")
+            else: 
+                print("Opção inválida.")
+        else: 
+            print("Aluno não encontrado.")
+
+    else: 
+        print("Opção inválida.")
